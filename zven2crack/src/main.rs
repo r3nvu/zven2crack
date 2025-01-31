@@ -5,7 +5,7 @@ use std::{
 };
 
 use anyhow::{Context, Result};
-use sevenz_rust::SevenZReader; // Importación simplificada
+use sevenz_rust::SevenZReader; 
 use zip::ZipArchive;
 
 fn main() -> Result<()> {
@@ -40,14 +40,20 @@ fn atacar_zip(ruta: &str, passwords: &[String]) -> Result<()> {
     let archivo = File::open(ruta).context("Error al abrir ZIP")?;
     let mut zip = ZipArchive::new(BufReader::new(archivo)).context("ZIP inválido")?;
 
+    let mut counter = 0; // Contador de contraseñas probadas
+
     for pass in passwords {
-        println!("Probando: {}", pass);
+        counter += 1; // Incrementar el contador
+        // Ya no se imprime la contraseña, pero se incrementa el contador
+        if counter % 10 == 0 {
+            println!("Probadas {} contraseñas", counter); // Mostrar cada 10 contraseñas
+        }
 
         for i in 0..zip.len() {
             if let Ok(Ok(mut file)) = zip.by_index_decrypt(i, pass.as_bytes()) {
                 let mut buffer = Vec::new();
                 if file.read_to_end(&mut buffer).is_ok() {
-                    println!("Contraseña encontrada: {}", pass);
+                    println!("Contraseña encontrada después de probar {} contraseñas", counter);
                     return Ok(());
                 }
             }
@@ -60,15 +66,18 @@ fn atacar_zip(ruta: &str, passwords: &[String]) -> Result<()> {
 fn atacar_7z(ruta: &str, passwords: &[String]) -> Result<()> {
     let path = Path::new(ruta);
 
-    for pass in passwords {
-        println!("Probando: {}", pass);
+    let mut counter = 0;
 
-        // Usar `.into()` para convertir el `&str` a `Password`
-        if SevenZReader::open(path, pass.as_str().into()).is_ok() {
-            println!("Contraseña encontrada: {}", pass);
+    for pass in passwords {
+        counter += 1;
+
+        let result = SevenZReader::open(path, pass.as_str().into());
+        if result.is_ok() {
+            println!("Contraseña encontrada después de probar {} contraseñas", counter);
             return Ok(());
         }
     }
 
+    println!("Contraseña no encontrada después de probar {} contraseñas", counter);
     anyhow::bail!("Contraseña no encontrada");
 }
