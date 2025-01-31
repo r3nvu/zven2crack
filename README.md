@@ -1,34 +1,78 @@
-Aquí tienes todo el contenido en formato Markdown, sin detalles fuera:
-
 # zven2crack
 
-**zven2crack** es una herramienta de línea de comandos para realizar ataques de diccionario a archivos `.7z` y `.zip` protegidos por contraseña. Utiliza un archivo de diccionario de contraseñas y prueba cada entrada hasta encontrar la correcta.
+Este proyecto tiene como objetivo la automatización del crackeo de archivos `.7z` utilizando un diccionario de contraseñas. Los archivos de diccionario se encuentran en el directorio `dictionaries`.
 
-## Requisitos
+## Estructura del Proyecto
 
-- **Rust**: Instalar desde [rust-lang.org](https://www.rust-lang.org/).
-- **7-Zip (p7zip)**: Requerido para archivos `.7z`. Instalar con:
+zven2crack/
+│
+├── dictionaries/        # Diccionarios de contraseñas
+├── src/                 # Código fuente de la aplicación
+├── target/              # Archivos de registro para depuración
+└── README.md            # Documentación del proyecto
 
-  ```bash
-  sudo apt install p7zip-full  # Debian/Ubuntu
-  brew install p7zip           # macOS
+## Instalación y Compilación
 
-Instalación
-	1.	Clona el repositorio:
+### Requisitos
 
-git clone https://github.com/tu_usuario/zven2crack.git
-cd zven2crack
+- Un sistema basado en Linux (por ejemplo, Ubuntu).
+- Acceso a terminal con privilegios de `sudo`.
+
+### Pasos para la instalación
+
+1. **Ejecuta el script `run.sh`**:
+   El proyecto incluye un script `run.sh` que automatiza la instalación de las dependencias necesarias. Para ejecutarlo, sigue estos pasos:
+
+   ```bash
+   chmod +x run.sh  # Da permisos de ejecución al script
+   ./run.sh         # Ejecuta el script para actualizar e instalar dependencias
+
+El script realiza las siguientes acciones:
+	•	Actualiza el sistema.
+	•	Instala las dependencias necesarias como build-essential y curl.
+	•	Instala Rust y Cargo (el gestor de paquetes de Rust).
+	•	Configura las variables de entorno necesarias para Rust.
+
+	2.	Configuración de entorno:
+Al ejecutar el script run.sh, las variables de entorno necesarias para Rust serán configuradas automáticamente. Sin embargo, si necesitas hacer esto manualmente, puedes añadir lo siguiente a tu archivo ~/.bashrc:
+
+export CARGO_HOME="$HOME/.cargo"
+export RUSTUP_HOME="$HOME/.rustup"
+export PATH="$CARGO_HOME/bin:$PATH"
 
 
-	2.	Compila el proyecto:
+	3.	Compilación del Proyecto:
+Una vez que las dependencias estén instaladas, entra en el directorio zven2crack y compila el proyecto con los siguientes comandos:
 
-cargo build --release
+cd zven2crack   # Entra al directorio del proyecto
+cargo build     # Compila el proyecto
+cargo run       # Ejecuta el proyecto
 
 
 
 Uso
 
-Sintaxis
+Una vez que el proyecto esté compilado, puedes usarlo de la siguiente manera:
+
+cargo run <ruta_del_archivo_7z> <ruta_del_diccionario>
+
+Donde:
+	•	<ruta_del_archivo_7z> es el archivo .7z que deseas atacar.
+	•	<ruta_del_diccionario> es el archivo de texto que contiene el diccionario de contraseñas que será probado.
+
+Por ejemplo, para atacar un archivo test.7z con un diccionario llamado passwords.txt:
+
+cargo run ./targetz/test_target.7z ./dictionaries/10k-worst-passwords.txt
+
+Salida esperada
+
+El programa probará las contraseñas del diccionario en el archivo .7z. Si encuentra la correcta, mostrará un mensaje indicando la contraseña encontrada y cuántas contraseñas se probaron.
+
+Notas
+	•	Se recomienda usar diccionarios grandes para mejorar las posibilidades de éxito, como el archivo 10k-worst-passwords.txt que se incluye en el proyecto.
+	•	Si el archivo .7z está protegido con una contraseña, el programa continuará probando las contraseñas hasta encontrar la correcta.
+
+Este archivo `README.md` tiene una estructura organizada y proporciona instrucciones claras sobre cómo instalar, compilar y ejecutar el proyecto, haciendo énfasis en la instalación y la configuración del entorno.
 
 cargo run <archivo_comprimido> <diccionario>
 
