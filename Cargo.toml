@@ -1,0 +1,7 @@
+[package]
+name = "zven2crack-main"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+zven2crack = { path = "./zven2crack" }

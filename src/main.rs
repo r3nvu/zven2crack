@@ -4,7 +4,7 @@ use std::path::Path;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
-
+    
     if args.len() != 3 {
         eprintln!("Uso: cargo run <ruta_del_archivo_7z> <ruta_del_diccionario>");
         exit(1);
@@ -20,10 +20,10 @@ fn main() {
         exit(1);
     }
 
-    // Cambiar al directorio 'zven2crack'
+    // Cambiar al directorio interno
     env::set_current_dir(project_dir).expect("No se pudo cambiar el directorio.");
 
-    // Ejecutar cargo run dentro del directorio 'zven2crack'
+    // Ejecuta cargo run dentro del directorio de zven2crack
     let output = Command::new("cargo")
         .arg("run")
         .arg(archivo)
