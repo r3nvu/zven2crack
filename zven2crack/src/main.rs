@@ -5,7 +5,7 @@ use std::{
 };
 
 use anyhow::{Context, Result};
-use sevenz_rust::SevenZReader; 
+use sevenz_rust::SevenZReader;
 use zip::ZipArchive;
 
 fn main() -> Result<()> {
@@ -40,23 +40,34 @@ fn atacar_zip(ruta: &str, passwords: &[String]) -> Result<()> {
     let archivo = File::open(ruta).context("Error al abrir ZIP")?;
     let mut zip = ZipArchive::new(BufReader::new(archivo)).context("ZIP inválido")?;
 
-    let mut counter = 0; // Contador de contraseñas probadas
+    let mut counter = 0;
 
     for pass in passwords {
-        counter += 1; // Incrementar el contador
-        // Ya no se imprime la contraseña, pero se incrementa el contador
+        counter += 1;
         if counter % 10 == 0 {
-            println!("Probadas {} contraseñas", counter); // Mostrar cada 10 contraseñas
+            println!("Probadas {} contraseñas", counter);
         }
 
+        let mut found = false;
         for i in 0..zip.len() {
             if let Ok(Ok(mut file)) = zip.by_index_decrypt(i, pass.as_bytes()) {
+                // CORRECCIÓN FINAL: Usar file().flags (propiedad, no método)
+                if (file.file().flags & 1) == 0 {
+                    continue;
+                }
                 let mut buffer = Vec::new();
                 if file.read_to_end(&mut buffer).is_ok() {
-                    println!("Contraseña encontrada después de probar {} contraseñas", counter);
-                    return Ok(());
+                    println!(
+                        "Contraseña encontrada después de probar {} contraseñas: {}",
+                        counter, pass
+                    );
+                    found = true;
+                    break;
                 }
             }
+        }
+        if found {
+            return Ok(());
         }
     }
 
@@ -72,12 +83,23 @@ fn atacar_7z(ruta: &str, passwords: &[String]) -> Result<()> {
         counter += 1;
 
         let result = SevenZReader::open(path, pass.as_str().into());
-        if result.is_ok() {
-            println!("Contraseña encontrada: '{}' después de probar {} contraseñas", pass, counter);
-            return Ok(());
+        if let Ok(mut archive) = result {
+            if archive
+                .for_each_entries(|_, _| -> Result<bool, sevenz_rust::Error> { Ok(true) })
+                .is_ok()
+            {
+                println!(
+                    "Contraseña encontrada: '{}' después de probar {} contraseñas",
+                    pass, counter
+                );
+                return Ok(());
+            }
         }
     }
 
-    println!("Contraseña no encontrada después de probar {} contraseñas", counter);
+    println!(
+        "Contraseña no encontrada después de probar {} contraseñas",
+        counter
+    );
     anyhow::bail!("Contraseña no encontrada");
 }

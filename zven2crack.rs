@@ -20,10 +20,8 @@ fn main() {
         exit(1);
     }
 
-    // Cambiar al directorio 'zven2crack'
     env::set_current_dir(project_dir).expect("No se pudo cambiar el directorio.");
 
-    // Ejecutar cargo run dentro del directorio 'zven2crack'
     let output = Command::new("cargo")
         .arg("run")
         .arg(archivo)
