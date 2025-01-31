@@ -73,7 +73,7 @@ fn atacar_7z(ruta: &str, passwords: &[String]) -> Result<()> {
 
         let result = SevenZReader::open(path, pass.as_str().into());
         if result.is_ok() {
-            println!("Contraseña encontrada después de probar {} contraseñas", counter);
+            println!("Contraseña encontrada: '{}' después de probar {} contraseñas", pass, counter);
             return Ok(());
         }
     }
