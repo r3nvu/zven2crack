@@ -1,9 +1,9 @@
 [package]
 name = "zven2crack"
 version = "0.1.0"
-edition = "2025"
+edition = "2021"
 
 [dependencies]
 zip = "0.6.6"
-sevenz-rust = "0.1.1"
+sevenz-rust = "0.1.5"
 anyhow = "1.0.80"
