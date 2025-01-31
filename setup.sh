@@ -1,8 +1,4 @@
 #!/bin/bash
-
-echo "Actualizando el sistema..."
-sudo apt-get update
-
 echo "Instalando dependencias necesarias..."
 sudo apt-get install -y build-essential curl
 
@@ -20,4 +16,4 @@ if ! grep -q "$CARGO_HOME/bin" "$HOME/.bashrc"; then
     source "$HOME/.bashrc"
 fi
 
-cd zven2crack
+source $HOME/.cargo/env
