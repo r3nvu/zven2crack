@@ -1,4 +1,4 @@
-# zip7z-brute-forcer
+# 7z-to-Crack
 
 ## Description
 A brute-force tool for cracking password-protected ZIP and 7z archives using wordlists.
