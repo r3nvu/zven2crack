@@ -1,4 +1,4 @@
-# 7z-to-Crack
+# zven2crack
 
 ## Description
 A brute-force tool for cracking password-protected ZIP and 7z archives using wordlists.
