@@ -11,38 +11,12 @@ Professional-grade tool for automated password recovery of 7z archives using dic
 
 Automated password cracking solution for `.7z` archives using customizable password dictionaries. Password lists are stored in the `dictionaries` directory.
 
-```bash
-cargo run <7z_file> <dictionary_path>
-```
-
-## 🛠 Installation & Build Guide
-
-### System Requirements
-- Linux distribution (Ubuntu/Debian recommended)
-- Terminal with `sudo` privileges
-- Minimum 2GB RAM (for large dictionaries)
-
 ### Automated Setup
 Execute the installation script to configure all dependencies:
 
 ```bash
 chmod +x run.sh  # Set executable permissions
 ./run.sh         # Run system update & install dependencies
-```
-
-**Script Operations:**
-- System package updates
-- Installation of essential tools (`build-essential`, `curl`)
-- Rust toolchain installation via `rustup`
-- Environment configuration for Rust development
-
-### Manual Environment Setup
-Add to `~/.bashrc` (if not automated):
-
-```bash
-export CARGO_HOME="$HOME/.cargo"
-export RUSTUP_HOME="$HOME/.rustup"
-export PATH="$CARGO_HOME/bin:$PATH"
 ```
 
 ### Compilation Instructions
@@ -58,6 +32,10 @@ cargo run --release    # Execute optimized binary
 
 ### Command Syntax
 ```bash
+./run.sh
+
+or
+
 cargo run --release <PATH_TO_7Z> <DICTIONARY_FILE>
 ```
 
