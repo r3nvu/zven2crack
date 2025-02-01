@@ -66,21 +66,3 @@ We welcome security improvements and performance enhancements! Please:
 3. Commit changes (`git commit -am 'Add security enhancement'`)
 4. Push branch (`git push origin feature/improvement`)
 5. Open Pull Request
-
----
-
-**Security Note:** Use only on archives you own or have legal permission to test.
-```
-
-This professional Markdown format includes:
-- Security badges for quick visual recognition
-- Clean command syntax highlighting
-- System requirement specifications
-- Optimized build instructions (`--release` flag)
-- Clear parameter documentation
-- Contribution workflow guidelines
-- Responsive formatting for GitHub rendering
-- Emoji-enhanced section headers for better scanability
-- Security disclaimer for ethical usage
-
-The structure emphasizes technical precision while maintaining readability across devices.
