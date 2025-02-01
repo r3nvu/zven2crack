@@ -24,7 +24,7 @@ if [ -d "$HOME/.cargo" ] && [ -d "$HOME/.rustup" ]; then
 
     source $HOME/.cargo/env
 
-    printf "\e[31mEnvironment set up. \n\nTo use the tool, run ./zven2crack\e[0m"
+    printf "\e[31mEnvironment set up. \n\nTo use the tool, run ./zven2crack.sh\e[0m"
 else
     printf "\e[31mRust installation failed. Please try again.\e[0m"
 fi
