@@ -4,7 +4,7 @@ use std::path::Path;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
-    
+
     if args.len() != 3 {
         eprintln!("Uso: cargo run <ruta_del_archivo_7z> <ruta_del_diccionario>");
         exit(1);
@@ -13,28 +13,25 @@ fn main() {
     let archivo = &args[1];
     let diccionario = &args[2];
 
-    let project_dir = Path::new("zven2crack");
+    let brute_force_dir = Path::new("zven2crack");
 
-    if !project_dir.exists() {
-        eprintln!("El directorio '{}' no existe.", project_dir.display());
+    if !brute_force_dir.exists() {
+        eprintln!("El directorio '{}' no existe.", brute_force_dir.display());
         exit(1);
     }
 
-    // Cambiar al directorio interno
-    env::set_current_dir(project_dir).expect("No se pudo cambiar el directorio.");
-
-    // Ejecuta cargo run dentro del directorio de zven2crack
-    let output = Command::new("cargo")
-        .arg("run")
-        .arg(archivo)
-        .arg(diccionario)
-        .output()
-        .expect("Error al ejecutar cargo run");
-
-    if !output.status.success() {
-        eprintln!("Error en la ejecución: {}", String::from_utf8_lossy(&output.stderr));
+    if let Err(e) = env::set_current_dir(&brute_force_dir) {
+        eprintln!("No se pudo cambiar al directorio '{}': {}", brute_force_dir.display(), e);
         exit(1);
     }
 
-    println!("{}", String::from_utf8_lossy(&output.stdout));
+    let status = Command::new("cargo")
+        .args(&["run", "--release", "--", archivo, diccionario])
+        .status()
+        .expect("Error al ejecutar el módulo de fuerza bruta");
+
+    if !status.success() {
+        eprintln!("Error en la ejecución del módulo de fuerza bruta.");
+        exit(1);
+    }
 }

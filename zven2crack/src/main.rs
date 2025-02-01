@@ -10,7 +10,7 @@ use std::{
     thread,
 };
 use anyhow::{bail, Context, Result};
-use crossbeam_channel::bounded; // Se usa crossbeam_channel en lugar de std::sync::mpsc
+use crossbeam_channel::bounded; 
 
 fn main() -> Result<()> {
     let args: Vec<String> = env::args().collect();
@@ -25,7 +25,7 @@ fn main() -> Result<()> {
     let num_workers = num_cpus::get();
     let mut handles = Vec::new();
     for _ in 0..num_workers {
-        let rx = rx.clone(); // Ahora el receptor se puede clonar
+        let rx = rx.clone(); 
         let archive = archive.clone();
         let found = Arc::clone(&found);
         let handle = thread::spawn(move || {

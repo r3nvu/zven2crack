@@ -28,3 +28,5 @@ if [ -d "$HOME/.cargo" ] && [ -d "$HOME/.rustup" ]; then
 else
     printf "\e[31mRust installation failed. Please try again.\e[0m"
 fi
+
+chmod +x zven2crack
