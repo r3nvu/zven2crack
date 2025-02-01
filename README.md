@@ -1,11 +1,11 @@
+# zven2crack - 7z Password Cracking Automation
 ```markdown
-# 🔐 Zven2Crack - 7z Password Cracking Automation
-
 Professional-grade tool for automated password recovery of 7z archives using dictionary attacks. Built with Rust for maximum performance.
 
 ![GitHub](https://img.shields.io/badge/Platform-Linux-success)
 ![Rust](https://img.shields.io/badge/Built_with-Rust-orange)
 ![License](https://img.shields.io/badge/License-MIT-blue)
+```
 
 ## 📦 Project Overview
 
@@ -17,7 +17,6 @@ Execute the installation script to configure all dependencies:
 ```bash
 chmod +x run.sh  # Set executable permissions
 ./run.sh         # Run system update & install dependencies
-```
 
 ### Compilation Instructions
 Build and execute the project:
