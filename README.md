@@ -1,4 +1,4 @@
-# zven2crack - 7z Password Cracking Automation
+# zven2crack
 ```markdown
 Professional-grade tool for automated password recovery of 7z archives using dictionary attacks. Built with Rust for maximum performance.
 
