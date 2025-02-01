@@ -1,105 +1,85 @@
 use std::{
+    env,
     fs::File,
-    io::{BufRead, BufReader, Read},
-    path::Path,
+    io::{BufRead, BufReader},
+    process::{Command, Stdio},
+    sync::{
+        atomic::{AtomicBool, Ordering},
+        Arc,
+    },
+    thread,
 };
-
-use anyhow::{Context, Result};
-use sevenz_rust::SevenZReader;
-use zip::ZipArchive;
+use anyhow::{bail, Context, Result};
+use crossbeam_channel::bounded; // Se usa crossbeam_channel en lugar de std::sync::mpsc
 
 fn main() -> Result<()> {
-    let args: Vec<String> = std::env::args().collect();
+    let args: Vec<String> = env::args().collect();
     if args.len() != 3 {
-        anyhow::bail!("Uso: {} <archivo> <diccionario>", args[0]);
+        bail!("Uso: {} <archivo.7z> <diccionario>", args[0]);
     }
-
-    let (archivo, diccionario) = (&args[1], &args[2]);
-    let passwords = cargar_diccionario(diccionario)?;
-
-    if archivo.ends_with(".zip") {
-        atacar_zip(archivo, &passwords)
-    } else if archivo.ends_with(".7z") {
-        atacar_7z(archivo, &passwords)
-    } else {
-        anyhow::bail!("Formato no soportado");
+    let archive = args[1].clone();
+    let dict_path = &args[2];
+    let passwords = load_dictionary(dict_path)?;
+    let found = Arc::new(AtomicBool::new(false));
+    let (tx, rx) = bounded(100);
+    let num_workers = num_cpus::get();
+    let mut handles = Vec::new();
+    for _ in 0..num_workers {
+        let rx = rx.clone(); // Ahora el receptor se puede clonar
+        let archive = archive.clone();
+        let found = Arc::clone(&found);
+        let handle = thread::spawn(move || {
+            while !found.load(Ordering::Relaxed) {
+                match rx.recv() {
+                    Ok(pw) => {
+                        if found.load(Ordering::Relaxed) {
+                            break;
+                        }
+                        let status = Command::new("7z")
+                            .args(&["t", &format!("-p{}", pw), &archive])
+                            .stdout(Stdio::null())
+                            .stderr(Stdio::null())
+                            .status();
+                        if let Ok(s) = status {
+                            if s.success() {
+                                found.store(true, Ordering::Relaxed);
+                                println!("Contraseña encontrada: {}", pw);
+                                break;
+                            }
+                        }
+                    }
+                    Err(_) => break,
+                }
+            }
+        });
+        handles.push(handle);
     }
+    for pw in passwords {
+        if found.load(Ordering::Relaxed) {
+            break;
+        }
+        if tx.send(pw).is_err() {
+            break;
+        }
+    }
+    drop(tx);
+    for handle in handles {
+        let _ = handle.join();
+    }
+    if !found.load(Ordering::Relaxed) {
+        bail!("Contraseña no encontrada");
+    }
+    Ok(())
 }
 
-fn cargar_diccionario(ruta: &str) -> Result<Vec<String>> {
-    let archivo = File::open(ruta).context("Error al abrir diccionario")?;
-    let lineas = BufReader::new(archivo)
+fn load_dictionary(path: &str) -> Result<Vec<String>> {
+    let file = File::open(path)
+        .with_context(|| format!("Error al abrir el archivo de diccionario: {}", path))?;
+    let reader = BufReader::new(file);
+    let lines = reader
         .lines()
-        .filter_map(|l| l.ok())
-        .map(|l| l.trim().to_string())
+        .filter_map(Result::ok)
+        .map(|s| s.trim().to_string())
         .collect();
-    Ok(lineas)
-}
-
-fn atacar_zip(ruta: &str, passwords: &[String]) -> Result<()> {
-    let archivo = File::open(ruta).context("Error al abrir ZIP")?;
-    let mut zip = ZipArchive::new(BufReader::new(archivo)).context("ZIP inválido")?;
-
-    let mut counter = 0;
-
-    for pass in passwords {
-        counter += 1;
-        if counter % 10 == 0 {
-            println!("Probadas {} contraseñas", counter);
-        }
-
-        let mut found = false;
-        for i in 0..zip.len() {
-            if let Ok(Ok(mut file)) = zip.by_index_decrypt(i, pass.as_bytes()) {
-                // CORRECCIÓN FINAL: Usar file().flags (propiedad, no método)
-                if (file.file().flags & 1) == 0 {
-                    continue;
-                }
-                let mut buffer = Vec::new();
-                if file.read_to_end(&mut buffer).is_ok() {
-                    println!(
-                        "Contraseña encontrada después de probar {} contraseñas: {}",
-                        counter, pass
-                    );
-                    found = true;
-                    break;
-                }
-            }
-        }
-        if found {
-            return Ok(());
-        }
-    }
-
-    anyhow::bail!("Contraseña no encontrada");
-}
-
-fn atacar_7z(ruta: &str, passwords: &[String]) -> Result<()> {
-    let path = Path::new(ruta);
-
-    let mut counter = 0;
-
-    for pass in passwords {
-        counter += 1;
-
-        let result = SevenZReader::open(path, pass.as_str().into());
-        if let Ok(mut archive) = result {
-            if archive
-                .for_each_entries(|_, _| -> Result<bool, sevenz_rust::Error> { Ok(true) })
-                .is_ok()
-            {
-                println!(
-                    "Contraseña encontrada: '{}' después de probar {} contraseñas",
-                    pass, counter
-                );
-                return Ok(());
-            }
-        }
-    }
-
-    println!(
-        "Contraseña no encontrada después de probar {} contraseñas",
-        counter
-    );
-    anyhow::bail!("Contraseña no encontrada");
+    Ok(lines)
 }

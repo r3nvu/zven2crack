@@ -5,6 +5,8 @@ edition = "2021"
 
 [dependencies]
 zip = "0.6.6"
+rayon = "1.5"
 sevenz-rust = "0.1.5"
 anyhow = "1.0.80"
-
+num_cpus = "1.13"
+crossbeam-channel = "0.5"
