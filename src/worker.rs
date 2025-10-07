@@ -29,7 +29,7 @@ pub fn run_worker(archive: &str, dict_path: &str) -> Result<()> {
                             break;
                         }
                         let status = Command::new("7z")
-                            .args(&["t", &format!("-p{}", pw), &archive])
+                            .args(["t", &format!("-p{}", pw), &archive])
                             .stdout(Stdio::null())
                             .stderr(Stdio::null())
                             .status();
@@ -71,7 +71,7 @@ fn load_dictionary(path: &str) -> Result<Vec<String>> {
     let reader = BufReader::new(file);
     let lines = reader
         .lines()
-        .filter_map(Result::ok)
+        .map_while(Result::ok)
         .map(|s| s.trim().to_string())
         .collect();
     Ok(lines)
