@@ -20,12 +20,6 @@ chmod +x run.sh  # Set executable permissions
 
 ## 🚀 Usage Guide
 
-### Command Syntax
-```bash
-./run.sh
-
-or
-
 cargo run <PATH_TO_7Z> <DICTIONARY_FILE>
 ```
 
