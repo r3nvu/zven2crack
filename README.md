@@ -9,10 +9,10 @@ Professional-grade tool for automated password recovery of 7z archives using dic
 Execute the installation script to configure all dependencies:
 
 ```bash
+git clone https://github.com/r3nvu/zven2crack.git
+
 chmod +x run.sh  # Set executable permissions
 ./run.sh         # Run system update & install dependencies
-
-## 🚀 Usage Guide
 
 cargo run <PATH_TO_7Z> <DICTIONARY_FILE>
 ```
@@ -20,11 +20,6 @@ cargo run <PATH_TO_7Z> <DICTIONARY_FILE>
 **Parameters:**
 - `<PATH_TO_7Z>`: Target 7z/zip archive
 - `<DICTIONARY_FILE>`: Password dictionary text file
-
-### Example Attack
-```bash
-cargo run --release ./targetz/test_target.7z ./dictionaries/10k-worst-passwords.txt
-```
 
 ### Expected Output
 ```
