@@ -1,9 +1,9 @@
+use crate::worker;
 use std::env;
 use std::fs::File;
 use std::io::{BufWriter, Write};
 use std::path::Path;
 use std::process::Command;
-use crate::worker;
 
 pub fn verify_directory(brute_force_dir: &Path) -> bool {
     if !brute_force_dir.exists() {
@@ -29,6 +29,7 @@ pub fn change_directory(brute_force_dir: &Path) -> bool {
 
 // Simple generator that writes all combinations of the charset between min_len and max_len.
 // WARNING: Number of lines grows exponentially.
+#[allow(dead_code)]
 pub fn generate_dictionary(out_path: &Path, min_len: usize, max_len: usize, charset: &str) -> bool {
     let file = match File::create(out_path) {
         Ok(f) => f,

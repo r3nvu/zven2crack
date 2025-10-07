@@ -1,5 +1,5 @@
-use std::process::exit;
 use std::path::Path;
+use std::process::exit;
 mod bruteforce;
 mod worker;
 

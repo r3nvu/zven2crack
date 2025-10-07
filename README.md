@@ -1,4 +1,5 @@
 # zven2crack
+
 ![GitHub](https://img.shields.io/badge/Platform-Linux-success)
 ![Rust](https://img.shields.io/badge/Built_with-Rust-orange)
 ![License](https://img.shields.io/badge/License-MIT-blue)
@@ -44,6 +45,4 @@ Note: generated dictionaries can become very large. Use small parameters for tes
 
 Expected output (if password is found):
 
-```
 [✓] Password found: "s3cr3t_p@ss"
-```

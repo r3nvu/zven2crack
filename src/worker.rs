@@ -1,6 +1,15 @@
-use std::{fs::File, io::{BufRead, BufReader}, process::{Command, Stdio}, sync::{atomic::{AtomicBool, Ordering}, Arc}, thread};
-use anyhow::{Result, bail};
+use anyhow::{bail, Result};
 use crossbeam_channel::bounded;
+use std::{
+    fs::File,
+    io::{BufRead, BufReader},
+    process::{Command, Stdio},
+    sync::{
+        atomic::{AtomicBool, Ordering},
+        Arc,
+    },
+    thread,
+};
 
 pub fn run_worker(archive: &str, dict_path: &str) -> Result<()> {
     let passwords = load_dictionary(dict_path)?;
