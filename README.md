@@ -18,15 +18,6 @@ Execute the installation script to configure all dependencies:
 chmod +x run.sh  # Set executable permissions
 ./run.sh         # Run system update & install dependencies
 
-### Compilation Instructions
-Build and execute the project:
-
-```bash
-cd zven2crack
-cargo build --release  # Optimized build
-cargo run --release    # Execute optimized binary
-```
-
 ## 🚀 Usage Guide
 
 ### Command Syntax
@@ -35,7 +26,7 @@ cargo run --release    # Execute optimized binary
 
 or
 
-cargo run --release <PATH_TO_7Z> <DICTIONARY_FILE>
+cargo run <PATH_TO_7Z> <DICTIONARY_FILE>
 ```
 
 **Parameters:**
