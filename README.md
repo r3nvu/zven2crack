@@ -1,15 +1,11 @@
 # zven2crack
 ```markdown
-Professional-grade tool for automated password recovery of 7z archives using dictionary attacks. Built with Rust for maximum performance.
-
 ![GitHub](https://img.shields.io/badge/Platform-Linux-success)
 ![Rust](https://img.shields.io/badge/Built_with-Rust-orange)
 ![License](https://img.shields.io/badge/License-MIT-blue)
 ```
 
-## 📦 Project Overview
-
-Automated password cracking solution for `.7z` archives using customizable password dictionaries. Password lists are stored in the `dictionaries` directory.
+Professional-grade tool for automated password recovery of 7z archives using dictionary attacks. Built with Rust for maximum performance.
 
 ### Automated Setup
 Execute the installation script to configure all dependencies:
@@ -36,17 +32,3 @@ cargo run --release ./targetz/test_target.7z ./dictionaries/10k-worst-passwords.
 ```
 [✓] Password found: "s3cr3t_p@ss"
 ```
-
-## 💡 Operational Notes
-- Dictionary Selection: Larger dictionaries (10k+ entries) yield better results
-- Performance: Multi-threaded implementation optimizes testing speed
-- Continuity: Process persists through entire dictionary until success
-- Supported Formats: 7z and ZIP archive formats
-
-## 🤝 Contribution Guidelines
-We welcome security improvements and performance enhancements! Please:
-1. Fork the repository
-2. Create feature branch (`git checkout -b feature/improvement`)
-3. Commit changes (`git commit -am 'Add security enhancement'`)
-4. Push branch (`git push origin feature/improvement`)
-5. Open Pull Request
