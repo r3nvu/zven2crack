@@ -45,4 +45,4 @@ Note: generated dictionaries can become very large. Use small parameters for tes
 
 Expected output (if password is found):
 
-[✓] Password found: "s3cr3t_p@ss"
+[✓] Password found: "pass"
