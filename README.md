@@ -49,7 +49,7 @@ cargo run --release ./targetz/test_target.7z ./dictionaries/10k-worst-passwords.
 
 ### Expected Output
 ```
-[✓] Password found: "s3cr3t_p@ss" (Attempts: 428)
+[✓] Password found: "s3cr3t_p@ss"
 ```
 
 ## 💡 Operational Notes
