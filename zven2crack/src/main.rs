@@ -15,7 +15,7 @@ use crossbeam_channel::bounded;
 fn main() -> Result<()> {
     let args: Vec<String> = env::args().collect();
     if args.len() != 3 {
-        bail!("Uso: {} <archivo.7z> <diccionario>", args[0]);
+        bail!("Usage: {} <archive.7z> <dictionary>", args[0]);
     }
     let archive = args[1].clone();
     let dict_path = &args[2];
@@ -43,7 +43,7 @@ fn main() -> Result<()> {
                         if let Ok(s) = status {
                             if s.success() {
                                 found.store(true, Ordering::Relaxed);
-                                println!("Contraseña encontrada: {}", pw);
+                                println!("Password found: {}", pw);
                                 break;
                             }
                         }
@@ -67,14 +67,14 @@ fn main() -> Result<()> {
         let _ = handle.join();
     }
     if !found.load(Ordering::Relaxed) {
-        bail!("Contraseña no encontrada");
+        bail!("Password not found");
     }
     Ok(())
 }
 
 fn load_dictionary(path: &str) -> Result<Vec<String>> {
     let file = File::open(path)
-        .with_context(|| format!("Error al abrir el archivo de diccionario: {}", path))?;
+        .with_context(|| format!("Failed to open dictionary file: {}", path))?;
     let reader = BufReader::new(file);
     let lines = reader
         .lines()

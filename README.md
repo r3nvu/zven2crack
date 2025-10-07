@@ -5,23 +5,45 @@
 
 Professional-grade tool for automated password recovery of 7z archives using dictionary attacks. Built with Rust for maximum performance.
 
-### Automated Setup
-Execute the installation script to configure all dependencies:
+## Installation and usage
+
+This project includes `setup.sh` which builds the release binary and optionally installs a system-wide wrapper called `zven2crack`.
+
+Installation (requires sudo to copy into /usr/local/bin):
 
 ```bash
 git clone https://github.com/r3nvu/zven2crack.git
-
-chmod +x run.sh  # Set executable permissions
-./run.sh         # Run system update & install dependencies
-
-cargo run <PATH_TO_7Z> <DICTIONARY_FILE>
+cd zven2crack
+chmod +x setup.sh
+./setup.sh
 ```
 
-**Parameters:**
-- `<PATH_TO_7Z>`: Target 7z/zip archive
-- `<DICTIONARY_FILE>`: Password dictionary text file
+After successful installation you can run:
 
-### Expected Output
+```bash
+zven2crack <archive.7z> use <dictionary_path>
+zven2crack <archive.7z> gen <output> <min_len> <max_len> <charset>
+```
+
+Examples:
+
+- Use an existing dictionary:
+
+```bash
+zven2crack secret.7z use /path/to/dictionary.txt
+```
+
+- Generate a small dictionary example:
+
+```bash
+# Generate all combinations of 'ab' with length 1..2
+zven2crack secret.7z gen /tmp/mydict.txt 1 2 ab
+```
+
+Note: generated dictionaries can become very large. Use small parameters for testing.
+
+Expected output (if password is found):
+
 ```
 [✓] Password found: "s3cr3t_p@ss"
 ```

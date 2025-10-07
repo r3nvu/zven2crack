@@ -1,6 +1,7 @@
 use std::process::exit;
 use std::path::Path;
 mod bruteforce;
+mod worker;
 
 fn main() {
     let brute_force_dir = Path::new("zven2crack");

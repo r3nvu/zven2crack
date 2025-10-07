@@ -1,11 +1,11 @@
-# Proyecto Sevenz2Crack
+# Sevenz2Crack Project
 
-Este proyecto tiene como objetivo la automatización del crackeo de archivos 7z y zip utilizando un diccionario de contraseñas.
+This project automates password recovery for 7z and zip archives using password dictionary attacks.
 
-## Estructura del proyecto
+## Project structure
 
-- : Contiene los diccionarios de contraseñas.
-- : Código fuente de la aplicación.
-- : Archivos de registro para depuración.
-- : Archivos temporales generados durante la ejecución.
-- : Documentación del proyecto.
+- dictionaries/: contains password dictionary files.
+- src/: application source code.
+- logs/: debugging log files.
+- tmp/: temporary files generated during execution.
+- docs/: project documentation.
